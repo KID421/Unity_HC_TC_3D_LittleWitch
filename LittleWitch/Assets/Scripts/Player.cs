@@ -16,7 +16,10 @@ public class Player : MonoBehaviour
     public float radius = 1f;
     [Header("檢查地板球體位移")]
     public Vector3 offset;
+    [Header("跳躍次數限制")]
+    public int jumpCountLimit = 2;
 
+    private int jumpCount;
     /// <summary>
     /// 是否在地面上
     /// </summary>
@@ -90,15 +93,25 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && isGround)    // 如果 按下 空白建 並且 在地面上
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < jumpCountLimit)    // 如果 按下 空白建 並且 在地面上
         {
+            jumpCount++;
+            rig.Sleep();                                    // 睡著
+            rig.WakeUp();                                   // 醒來
             rig.AddForce(Vector3.up * jump);                // 推力
+            ani.SetTrigger("跳躍觸發");
         }
 
         // 碰撞物件陣列 = 物理.球體碰撞範圍(中心點，半徑，圖層)
         Collider[] hit = Physics.OverlapSphere(transform.position + offset, radius, 1 << 8);
 
-        if (hit.Length > 0 && hit[0]) isGround = true;          // 如果 碰到物件陣列數量 > 0 並且 存在 就設定為在地面上
+        if (hit.Length > 0 && hit[0])
+        {
+            isGround = true;                                    // 如果 碰到物件陣列數量 > 0 並且 存在 就設定為在地面上
+            jumpCount = 0;
+        }
         else isGround = false;                                  // 球體沒碰到地面 就設定為 不在地面上
+
+        ani.SetBool("是否在地面上", isGround);
     }
 }
