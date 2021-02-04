@@ -12,8 +12,8 @@ GameObject:
   - component: {fileID: 3300000}
   - component: {fileID: 2300000}
   - component: {fileID: 6497596}
-  m_Layer: 0
-  m_Name: Floor_A
+  m_Layer: 8
+  m_Name: "\u5730\u677F_A"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
