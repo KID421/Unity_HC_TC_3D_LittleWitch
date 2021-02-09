@@ -1,9 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
-    [Header("移動速度"), Range(0, 1000)]
+    [Header("跑步移動速度"), Range(0, 1000)]
     public float speed = 10;
+    [Header("走路移動速度"), Range(0, 1000)]
+    public float speedWalk = 10;
     [Header("跳躍高度"), Range(0, 1000)]
     public float jump = 10;
     [Header("攝影機旋轉速度"), Range(0, 1000)]
@@ -19,6 +22,31 @@ public class Player : MonoBehaviour
     [Header("跳躍次數限制")]
     public int jumpCountLimit = 2;
 
+    [Header("血量"), Range(0, 5000)]
+    public float hp = 100;
+    private float hpMax;
+    [Header("魔力"), Range(0, 5000)]
+    public float mp = 500;
+    private float mpMax;
+    [Header("體力"), Range(0, 5000)]
+    public float ps = 200;
+    private float psMax;
+
+    [Header("吧條")]
+    public Image barHp;
+    public Image barMp;
+    public Image barPS;
+
+    [Header("移動時每秒扣除體力"), Range(0, 5000)]
+    public float psMove = 1;
+    [Header("跳躍時扣除體力"), Range(0, 5000)]
+    public float psJump = 5;
+    [Header("停止時每秒恢復體力"), Range(0, 5000)]
+    public float psRecover = 10;
+
+    /// <summary>
+    /// 跳躍次數
+    /// </summary>
     private int jumpCount;
     /// <summary>
     /// 是否在地面上
@@ -42,12 +70,18 @@ public class Player : MonoBehaviour
         ani = GetComponent<Animator>();
         rig = GetComponent<Rigidbody>();
         cam = GameObject.Find("攝影機根物件").transform;
+
+        hpMax = hp;
+        mpMax = mp;
+        psMax = ps;
     }
 
     private void Update()
     {
         Move();
         TurnCamera();
+        Jump();
+        PSSystem();
     }
 
     /// <summary>
@@ -55,7 +89,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void FixedUpdate()
     {
-        Jump();
+        
     }
 
     /// <summary>
@@ -71,10 +105,17 @@ public class Player : MonoBehaviour
 
         transform.rotation = Quaternion.Lerp(transform.rotation, camNew.rotation, 0.5f * turnSpeed * Time.deltaTime);               // 角色的角度 = 角色，攝影機 角度的插值
 
-        rig.velocity = ((camNew.forward * v + camNew.right * h) * speed * Time.deltaTime) + transform.up * rig.velocity.y;          // 加速度 = 前方 * 前後值 + 右方 * 左右值 * 速度 * 1/60 + 上方 * 加速度上下值
-
-        ani.SetBool("跑步開關", rig.velocity.magnitude > 0.1f);             // 動畫.設定布林值("參數名稱"，剛體.加速度.值 > 0)
-
+        if (ps > 0)
+        {
+            rig.velocity = ((camNew.forward * v + camNew.right * h) * speed * Time.deltaTime) + transform.up * rig.velocity.y;          // 加速度 = 前方 * 前後值 + 右方 * 左右值 * 速度 * 1/60 + 上方 * 加速度上下值
+            ani.SetBool("跑步開關", rig.velocity.magnitude > 0.1f);             // 動畫.設定布林值("參數名稱"，剛體.加速度.值 > 0)
+        }
+        else
+        {
+            rig.velocity = ((camNew.forward * v + camNew.right * h) * speedWalk * Time.deltaTime) + transform.up * rig.velocity.y;
+            ani.SetBool("走路開關", rig.velocity.magnitude > 0.1f);
+            ani.SetBool("跑步開關", false);
+        }
     }
 
     /// <summary>
@@ -93,15 +134,6 @@ public class Player : MonoBehaviour
     /// </summary>
     private void Jump()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < jumpCountLimit)    // 如果 按下 空白建 並且 在地面上
-        {
-            jumpCount++;
-            rig.Sleep();                                    // 睡著
-            rig.WakeUp();                                   // 醒來
-            rig.AddForce(Vector3.up * jump);                // 推力
-            ani.SetTrigger("跳躍觸發");
-        }
-
         // 碰撞物件陣列 = 物理.球體碰撞範圍(中心點，半徑，圖層)
         Collider[] hit = Physics.OverlapSphere(transform.position + offset, radius, 1 << 8);
 
@@ -113,5 +145,39 @@ public class Player : MonoBehaviour
         else isGround = false;                                  // 球體沒碰到地面 就設定為 不在地面上
 
         ani.SetBool("是否在地面上", isGround);
+
+        if (ps < psJump) return;    // 如果 體力 < 跳躍需要體力 就跳出
+
+        if (Input.GetKeyDown(KeyCode.Space) && jumpCount < jumpCountLimit - 1)    // 如果 按下 空白建 並且 在地面上
+        {
+            jumpCount++;
+            rig.Sleep();                                    // 睡著
+            rig.WakeUp();                                   // 醒來
+            rig.AddForce(Vector3.up * jump);                // 推力
+            ani.SetTrigger("跳躍觸發");
+
+            // 跳躍扣除體力
+            ps -= psJump;
+            barPS.fillAmount = ps / psMax;
+        }
+    }
+
+    /// <summary>
+    /// 體力系統
+    /// </summary>
+    private void PSSystem()
+    {
+        if (ani.GetBool("跑步開關"))
+        {
+            ps -= psMove * Time.deltaTime;
+            barPS.fillAmount = ps / psMax;
+        }
+        else if (!ani.GetBool("走路開關"))
+        {
+            ps += psRecover * Time.deltaTime;
+            barPS.fillAmount = ps / psMax;
+        }
+
+        ps = Mathf.Clamp(ps, 0, psMax);
     }
 }
