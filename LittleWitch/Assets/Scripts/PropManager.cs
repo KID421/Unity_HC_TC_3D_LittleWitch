@@ -8,9 +8,17 @@ public class PropManager : MonoBehaviour
     public GameObject objOpen;
     [Header("面向角度範圍")]
     public float faceRange = 10;
+    [Header("補血特效")]
+    public GameObject objHp;
+    [Header("治癒的值")]
+    public float cure = 30;
 
     private bool playerIn;
     private Transform player;
+    /// <summary>
+    /// 是否打開
+    /// </summary>
+    private bool open;
 
     /// <summary>
     /// 打開道具
@@ -19,10 +27,13 @@ public class PropManager : MonoBehaviour
     {
         // Vector3.Angle(向量 1，向量 2)
         // 取得兩條向量的夾角
-        if (playerIn && Input.GetKeyDown(KeyCode.Mouse0) && Vector3.Angle(player.forward, transform.position - player.position) < faceRange)
+        if (!open && playerIn && Input.GetKeyDown(KeyCode.Mouse0) && Vector3.Angle(player.forward, transform.position - player.position) < faceRange)
         {
+            open = true;
             objClose.SetActive(false);
             objOpen.SetActive(true);
+            objHp.SetActive(true);
+            player.GetComponent<Player>().Cure(cure);
         }
     }
 

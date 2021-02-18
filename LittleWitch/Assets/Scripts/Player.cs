@@ -82,6 +82,9 @@ public class Player : MonoBehaviour
         TurnCamera();
         Jump();
         PSSystem();
+
+        // 測試用：扣血
+        if (Input.GetKeyDown(KeyCode.Alpha1)) Cure(-10);
     }
 
     /// <summary>
@@ -179,5 +182,16 @@ public class Player : MonoBehaviour
         }
 
         ps = Mathf.Clamp(ps, 0, psMax);
+    }
+
+    /// <summary>
+    /// 治癒
+    /// </summary>
+    /// <param name="cureValue">要治癒的值</param>
+    public void Cure(float cureValue)
+    {
+        hp += cureValue;                    // 補血
+        hp = Mathf.Clamp(hp, 0, hpMax);     // 夾住 0 ~ 最大值
+        barHp.fillAmount = hp / hpMax;      // 更新血條
     }
 }
