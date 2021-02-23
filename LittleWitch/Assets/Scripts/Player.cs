@@ -1,8 +1,10 @@
 ﻿using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 
 public class Player : MonoBehaviour
 {
+    #region 基本參數
     [Header("跑步移動速度"), Range(0, 1000)]
     public float speed = 10;
     [Header("走路移動速度"), Range(0, 1000)]
@@ -57,6 +59,29 @@ public class Player : MonoBehaviour
     private Transform cam;
     private float x;
     private float y;
+    #endregion
+
+    #region 攻擊參數
+    [Header("生成攻擊特效位置")]
+    public Transform attackPoint;
+    [Header("攻擊特效")]
+    public GameObject attackPS;
+    [Header("攻擊特效速度"), Range(0, 2000)]
+    public float attackSpeed = 500;
+    [Header("攻擊力"), Range(0, 500)]
+    public float attack = 50;
+    [Header("攻擊魔力消耗"), Range(0, 500)]
+    public float attackCost = 10;
+    [Header("生成攻擊特效延遲"), Range(0f, 1f)]
+    public float attackPSDelay = 0.15f;
+    [Header("生成後多久可進行下次攻擊"), Range(0f, 5f)]
+    public float attackDelay = 2f;
+
+    /// <summary>
+    /// 是否攻擊中
+    /// </summary>
+    private bool attacking;
+    #endregion
 
     private void OnDrawGizmos()
     {
@@ -78,10 +103,13 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
+        if (attacking) return;
+
         Move();
         TurnCamera();
         Jump();
         PSSystem();
+        Attack();
 
         // 測試用：扣血
         if (Input.GetKeyDown(KeyCode.Alpha1)) Cure(-10);
@@ -93,6 +121,38 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
         
+    }
+
+    /// <summary>
+    /// 攻擊
+    /// </summary>
+    private void Attack()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse0) && mp >= attackCost && !attacking)                 // 按下左鍵 並且 魔力 大於等於 攻擊魔力消耗 並且 不是攻擊中
+        {
+            StartCoroutine(AttackTimeControl());
+        }
+    }
+
+    /// <summary>
+    /// 攻擊時間控制
+    /// </summary>
+    private IEnumerator AttackTimeControl()
+    {
+        rig.velocity = Vector3.zero;
+        attacking = true;                                                                       // 正在攻擊中
+        mp -= attackCost;                                                                       // 扣除消耗
+        barMp.fillAmount = mp / mpMax;                                                          // 更新介面
+
+        ani.SetTrigger("攻擊觸發");
+
+        yield return new WaitForSeconds(attackPSDelay);                                         // 延遲生成
+
+        GameObject temp = Instantiate(attackPS, attackPoint.position, attackPoint.rotation);    // 生成攻擊特效在位置上
+        temp.GetComponent<Rigidbody>().AddForce(transform.forward * attackSpeed);               // 取得攻擊特效並添加推力
+
+        yield return new WaitForSeconds(attackDelay);                                           // 延遲再次攻擊
+        attacking = false;                                                                      // 不是在攻擊
     }
 
     /// <summary>
