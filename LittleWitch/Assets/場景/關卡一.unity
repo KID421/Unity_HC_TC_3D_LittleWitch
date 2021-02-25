@@ -119,7 +119,7 @@ NavMeshSettings:
     accuratePlacement: 0
     debug:
       m_Flags: 0
-  m_NavMeshData: {fileID: 0}
+  m_NavMeshData: {fileID: 23800000, guid: dff05037779d12f4ca3ef13a54bf2873, type: 2}
 --- !u!1001 &7721
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31371,6 +31371,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rangeTrack: 5
   speed: 3
+  rangeAttack: 3
+  attackCD: 3
+  attackRadius: 1.5
+  attackOffset: {x: 0.8, y: 1.5, z: -2.75}
 --- !u!136 &1188959668
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -31399,8 +31403,30 @@ Rigidbody:
   m_UseGravity: 1
   m_IsKinematic: 0
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0
+--- !u!195 &1188959672
+NavMeshAgent:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1188959666}
+  m_Enabled: 1
+  m_AgentTypeID: 0
+  m_Radius: 1.35
+  m_Speed: 3.5
+  m_Acceleration: 8
+  avoidancePriority: 50
+  m_AngularSpeed: 120
+  m_StoppingDistance: 0
+  m_AutoTraverseOffMeshLink: 1
+  m_AutoBraking: 1
+  m_AutoRepath: 1
+  m_Height: 4
+  m_BaseOffset: 0
+  m_WalkableMask: 4294967295
+  m_ObstacleAvoidanceType: 4
 --- !u!1001 &1193047352
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -59448,7 +59474,7 @@ GameObject:
   - component: {fileID: 8296172669307054522}
   - component: {fileID: 8296172669307054523}
   - component: {fileID: 8296172669307054524}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: "\u73A9\u5BB6"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
