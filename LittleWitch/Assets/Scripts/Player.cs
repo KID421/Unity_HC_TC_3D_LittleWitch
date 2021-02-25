@@ -255,8 +255,14 @@ public class Player : MonoBehaviour
         barHp.fillAmount = hp / hpMax;      // 更新血條
     }
 
-    public void Damage()
+    /// <summary>
+    /// 受傷
+    /// </summary>
+    /// <param name="getDamage">接收到的傷害值</param>
+    public void Damage(float getDamage)
     {
         ani.SetTrigger("受傷觸發");
+        hp -= getDamage;
+        barHp.fillAmount = hp / hpMax;
     }
 }

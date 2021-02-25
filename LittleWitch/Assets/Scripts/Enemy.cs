@@ -19,6 +19,8 @@ public class Enemy : MonoBehaviour
     public Vector3 attackOffset;
     [Header("攻擊延遲對玩家造成傷害"), Range(0, 2)]
     public float attackDelay = 0.8f;
+    [Header("攻擊力"), Range(0, 1000)]
+    public float attack = 30;
 
     private Animator ani;
     private Transform player;
@@ -112,7 +114,7 @@ public class Enemy : MonoBehaviour
 
         if (hits.Length > 0)
         {
-            hits[0].GetComponent<Player>().Damage();
+            hits[0].GetComponent<Player>().Damage(attack);
         }
     }
 }
