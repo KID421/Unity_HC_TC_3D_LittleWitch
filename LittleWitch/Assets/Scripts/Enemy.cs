@@ -21,6 +21,8 @@ public class Enemy : MonoBehaviour
     public float attackDelay = 0.8f;
     [Header("攻擊力"), Range(0, 1000)]
     public float attack = 30;
+    [Header("血量"), Range(0, 10000)]
+    public float hp = 500;
 
     private Animator ani;
     private Transform player;
@@ -48,11 +50,14 @@ public class Enemy : MonoBehaviour
 
         // 攻擊球體
         Gizmos.color = new Color(0, 1, 1, 0.3f);
-        Gizmos.DrawSphere(transform.position + attackOffset, attackRadius);
+        Gizmos.DrawSphere(transform.position + transform.right * attackOffset.x + transform.up * attackOffset.y + transform.forward * attackOffset.z, attackRadius);
     }
 
     private void Update()
     {
+        // 如果 正在攻擊中 就 跳出
+        if (ani.GetCurrentAnimatorStateInfo(0).IsName("攻擊")) return;
+
         Track();
     }
 
@@ -96,6 +101,10 @@ public class Enemy : MonoBehaviour
         else
         {
             timer += Time.deltaTime;        // 累加時間
+
+            Vector3 pos = player.position;  // 取得玩家座標
+            pos.y = transform.position.y;   // 將座標 Y 軸 改為怪物的 Y 軸
+            transform.LookAt(pos);          // 面向(修改後的座標)
         }
 
         nma.isStopped = true;
@@ -110,11 +119,33 @@ public class Enemy : MonoBehaviour
         yield return new WaitForSeconds(attackDelay);
 
         // 碰撞陣列 = 物理.覆蓋球體(座標 + 位移，半徑)
-        Collider[] hits = Physics.OverlapSphere(transform.position + attackOffset, attackRadius, 1 << 9);
+        Collider[] hits = Physics.OverlapSphere(transform.position + transform.right * attackOffset.x + transform.up * attackOffset.y + transform.forward * attackOffset.z, attackRadius, 1 << 9);
 
         if (hits.Length > 0)
         {
             hits[0].GetComponent<Player>().Damage(attack);
         }
+    }
+
+    /// <summary>
+    /// 受傷
+    /// </summary>
+    /// <param name="getDamage">接收到的傷害值</param>
+    public void Damage(float getDamage)
+    {
+        ani.SetTrigger("受傷觸發");
+        hp -= getDamage;
+
+        if (hp <= 0) Dead();
+    }
+
+    /// <summary>
+    /// 死亡
+    /// </summary>
+    private void Dead()
+    {
+        hp = 0;
+        ani.SetBool("死亡開關", true);
+        enabled = false;
     }
 }

@@ -59,6 +59,10 @@ public class Player : MonoBehaviour
     private Transform cam;
     private float x;
     private float y;
+    /// <summary>
+    /// 結束畫面 群組元件
+    /// </summary>
+    private CanvasGroup final;
     #endregion
 
     #region 攻擊參數
@@ -95,6 +99,7 @@ public class Player : MonoBehaviour
         ani = GetComponent<Animator>();
         rig = GetComponent<Rigidbody>();
         cam = GameObject.Find("攝影機根物件").transform;
+        final = GameObject.Find("結束畫面").GetComponent<CanvasGroup>();
 
         hpMax = hp;
         mpMax = mp;
@@ -150,6 +155,7 @@ public class Player : MonoBehaviour
 
         GameObject temp = Instantiate(attackPS, attackPoint.position, attackPoint.rotation);    // 生成攻擊特效在位置上
         temp.GetComponent<Rigidbody>().AddForce(transform.forward * attackSpeed);               // 取得攻擊特效並添加推力
+        temp.GetComponent<Magic>().attack = attack;
 
         yield return new WaitForSeconds(attackDelay);                                           // 延遲再次攻擊
         attacking = false;                                                                      // 不是在攻擊
@@ -264,5 +270,35 @@ public class Player : MonoBehaviour
         ani.SetTrigger("受傷觸發");
         hp -= getDamage;
         barHp.fillAmount = hp / hpMax;
+
+        if (hp <= 0) Dead();
+    }
+
+    /// <summary>
+    /// 死亡
+    /// </summary>
+    private void Dead()
+    {
+        hp = 0;
+        ani.SetBool("死亡開關", true);
+        enabled = false;
+        StartCoroutine(ShowFinal());
+    }
+
+    private IEnumerator ShowFinal()
+    {
+        final.interactable = true;                      // 可以互動
+        final.blocksRaycasts = true;                    // 開啟遮擋 - 讓滑鼠可以點到
+
+        float a = final.alpha;                          // 取得透明度
+
+        // while(布林值) { 程式區塊 }
+
+        while (a < 1)                                   // 當 透明度 小於 1 時持續執行
+        {
+            a += 0.1f;
+            final.alpha = a;
+            yield return new WaitForSeconds(0.1f);
+        }
     }
 }
