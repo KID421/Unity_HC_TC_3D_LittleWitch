@@ -1,4 +1,78 @@
 Base path: 'C:/Program Files/Unity/Hub/Editor/2019.2.19f1/Editor/Data', plugins path 'C:/Program Files/Unity/Hub/Editor/2019.2.19f1/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
+Cmd: compileComputeKernel
+  api=4 insize=15806 outsize=15248 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15806 outsize=29966 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15806 outsize=38729 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15806 outsize=45639 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15806 outsize=47695 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15806 outsize=36131 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15806 outsize=44372 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15806 outsize=64934 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15806 outsize=50048 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=15806 outsize=75859 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=26390 outsize=15377 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=26390 outsize=324 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=5910 outsize=5733 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1067 outsize=3163 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=1372 outsize=678 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=9590 outsize=9146 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=9730 outsize=3350 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4133 outsize=645 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=5067 outsize=2055 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=7611 outsize=1322 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=22088 outsize=14767 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=8884 outsize=4069 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=8163 outsize=695 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=37247 outsize=35084 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=37247 outsize=32909 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=5626 outsize=2406 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=5190 outsize=695 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=5190 outsize=899 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3133 outsize=551 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=10127 outsize=4256 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=7903 outsize=6747 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=4037 outsize=885 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=3740 outsize=1426 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=18083 outsize=635 ok=1
+Cmd: compileComputeKernel
+  api=4 insize=2555 outsize=756 ok=1
 Cmd: compileSnippet
-  api=4 type=1 insize=2295 outsize=446 kw= pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
+  api=4 type=0 insize=6855 outsize=810 kw=_NORMALMAP_TANGENT_SPACE _NORMALMAP _MASKMAP _EMISSIVE_COLOR_MAP pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
+Cmd: compileSnippet
+  api=4 type=1 insize=7331 outsize=8410 kw=LIGHTMAP_ON DIRLIGHTMAP_COMBINED DYNAMICLIGHTMAP_ON DECALS_3RT _NORMALMAP_TANGENT_SPACE _NORMALMAP _MASKMAP _DETAIL_MAP pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
+Cmd: compileSnippet
+  api=4 type=0 insize=12539 outsize=402 kw=_ENABLE_SUN_DISK pd=UNITY_ENABLE_REFLECTION_BUFFERS UNITY_USE_DITHER_MASK_FOR_ALPHABLENDED_SHADOWS UNITY_PBS_USE_BRDF1 UNITY_SPECCUBE_BOX_PROJECTION UNITY_SPECCUBE_BLENDING UNITY_ENABLE_DETAIL_NORMALMAP SHADER_API_DESKTOP UNITY_COLORSPACE_GAMMA UNITY_LIGHT_PROBE_PROXY_VOLUME UNITY_LIGHTMAP_FULL_HDR ok=1
